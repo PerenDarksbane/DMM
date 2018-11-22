@@ -1,0 +1,7 @@
+Python https://docs.python-guide.org/starting/install3/win/ 
+Chocolatey https://chocolatey.org/install (DONE)
+pipenv (DONE)
+Flask
+Postgres (Downloaded but must be run)
+Heroku https://devcenter.heroku.com/articles/getting-started-with-python 
+Memchache https://devcenter.heroku.com/articles/flask-memcache
