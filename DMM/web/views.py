@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from web.models import UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def user_login(request):
@@ -18,6 +19,11 @@ def user_login(request):
             return redirect('/register')
     else:
         return render(request, 'login.html', {}, context)
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect('/')
 
 def register(request):
     context = RequestContext(request)
@@ -49,6 +55,7 @@ def register(request):
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def posts(request):
     context = dict()
     context['post_content'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et tamen tantis vectigalibus ad liberalitatem utens etiam sine hac Pyladea amicitia multorum te benivolentia praeclare tuebere et munies. Ita redarguitur ipse a sese, convincunturque scripta eius probitate ipsius ac moribus. Ratio ista, quam defendis, praecepta, quae didicisti, quae probas, funditus evertunt amicitiam, quamvis eam Epicurus, ut facit, in caelum efferat laudibus. Ut ad minora veniam, mathematici, poëtae, musici, medici denique ex hac tamquam omnium artificum officina profecti sunt. Scientiam pollicentur, quam non erat mirum sapientiae cupido patria esse cariorem.'
