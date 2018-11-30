@@ -28,3 +28,55 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('website', 'picture')
+
+class AdventurerClass(models.Model):
+    className = models.CharField(max_length=30)
+    classFeats = models.CommaSeparatedIntegerField(max_length=50)
+    classItems = models.CommaSeparatedIntegerField(max_length=50)
+    classProficiencies = models.CommaSeparatedIntegerField(max_length=50)
+
+class AdventurerRace(models.Model):
+    raceName = models.CharField(max_length=30)
+    raceFeats = models.CommaSeparatedIntegerField(max_length=50)
+    statMod = models.CommaSeparatedIntegerField(max_length=50)
+    raceProficiencies = models.CommaSeparatedIntegerField(max_length=50)
+
+class AdventureBackground(models.Model):
+    backgroundName = models.CharField(max_length=30)
+    backgrounFeats = models.CommaSeparatedIntegerField(max_length=50)
+    backgrounItems = models.CommaSeparatedIntegerField(max_length=50)
+    backgrounProficiencies = models.CommaSeparatedIntegerField(max_length=50)
+
+class Feat(models.Model):
+    featName = models.CharField(max_length=30)
+    featDescription = models.TextField()
+
+class EquipmentItem(models.Model):
+    itemName = models.CharField(max_length=30)
+    itemDescription = models.TextField(blank=True)
+    armorMod = models.SmallIntegerField(blank=True)
+    statMod = models.CommaSeparatedIntegerField(max_length=50, blank=True)
+    speedMod = models.SmallIntegerField(blank=True)
+    initiativeMod = models.SmallIntegerField(blank=True)
+    weaponDamage = models.CharField(max_length=30, blank=True)
+    weaponTraits = models.TextField(blank=True)
+
+class Proficiency(models.Model):
+    proficiencyName = models.CharField(max_length=30)
+
+class Adventurer(models.Model):
+    advName = models.CharField(max_length=30)
+    alignment = models.CharField(max_length=2, blank=True)
+    experience = models.PositiveIntegerField(blank=True)
+    userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    advClass = models.CommaSeparatedIntegerField(max_length=50)
+    advRace = models.ForeignKey(AdventurerRace, on_delete=models.CASCADE)
+    advFeats = models.CommaSeparatedIntegerField(max_length=50)
+    advItems = models.CommaSeparatedIntegerField(max_length=50)
+    stats = models.CommaSeparatedIntegerField(max_length=50)
+    skills = models.CommaSeparatedIntegerField(max_length=50)
+    personalityTraits = models.TextField(blank=True)
+    ideals = models.TextField(blank=True)
+    bonds = models.TextField(blank=True)
+    flaws = models.TextField(blank=True)
+    inspiration = models.SmallIntegerField(blank=True)
