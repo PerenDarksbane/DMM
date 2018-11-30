@@ -13,17 +13,23 @@
     <div class="container-fluid post">
         <h1>Register for DMM</h1>
         {% if registered %}
-            <strong>You have successfully registered!</strong>
-        <a href="/index">Return to the homepage.</a><br />
+            <p class="my-4"><strong>You have successfully registered!</strong></p>
         {% else %}
-        <strong>Register here!</strong><br />
+        <strong>Register here!</strong><br>
 
         <form id="user_form" method="post" action="/register" enctype="multipart/form-data">
+            <label for="username">Username</label>
+            <input name="username" type="text" class="form-control" id="username" placeholder="Username" value="" size="50">
+            <label for="password">Password</label>
+            <input name="password" type="password" class="form-control" id="password" placeholder="Password" value="" size="50">
+            <label for="email">Email</label>
+            <input name="email" type="email" class="form-control" id="email" placeholder="Email" value="" size="50">
             {% csrf_token %}
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
+            <label for="picture">Picture</label><br>
+            {{ profile_form.picture }}
+            <br><br>
             <!-- Provide a button to click to submit the form. -->
-            <input type="submit" name="submit" value="Register" />
+            <button name="submit" type="submit" class="btn btn-primary">Register</button>
         </form>
         {% endif %}
     </div>

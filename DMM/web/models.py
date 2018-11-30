@@ -81,3 +81,4 @@ class Adventurer(models.Model):
     bonds = models.TextField(blank=True)
     flaws = models.TextField(blank=True)
     inspiration = models.SmallIntegerField(blank=True)
+    size = models.CharField(max_length=1)

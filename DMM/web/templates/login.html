@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Register
+    Login
 {% endblock %}
 
 {% block css %}
@@ -15,11 +15,14 @@
 
         <form id="login_form" method="post" action="/login">
             {% csrf_token %}
-            Username: <input type="text" name="username" value="" size="50" />
-            <br><br>
-            Password: <input type="password" name="password" value="" size="50" />
-            <br><br>
-            <input type="submit" value="submit" />
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input name="username" type="text" class="form-control" id="username" placeholder="Username" value="" size="50">
+                <label for="password">Password</label>
+                <input name="password" type="text" class="form-control" id="password" placeholder="Password" value="" size="50">
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </form>
     </div>
 {% endblock %}
