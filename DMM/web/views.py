@@ -1,8 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import RequestContext
 from web.models import UserForm, UserProfileForm
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
 
 # Create your views here.
+def user_login(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('/posts')
+        else:
+            return redirect('/register')
+    else:
+        return render(request, 'login.html', {}, context)
+
 def register(request):
     context = RequestContext(request)
     registered = False
