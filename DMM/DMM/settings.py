@@ -25,6 +25,7 @@ SECRET_KEY = 'zm^g(@5!cthaa()m79h5ubtw3bqzl50-h^_84*4uww6an^vjhb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Websites that can host this project
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'DMMdjango.herokuapp.com']
 
 
@@ -130,4 +131,5 @@ STATIC_DIRS = [
     os.path.join(PROJECT_ROOT, 'static')
 ]
 
+#Location you will be redirected too if you try to access a login required site without logging in.
 LOGIN_URL = '/login'

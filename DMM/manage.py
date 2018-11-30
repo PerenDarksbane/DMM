@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#Used By Django For Project management
 import os
 import sys
 
