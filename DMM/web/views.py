@@ -52,6 +52,25 @@ def register(request):
             {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
             context)
 
+@login_required
+def create_feat(request):
+    context = RequestContext(request)
+    registered = False
+    if request.method == 'POST':
+        featName = request.POST['featName']
+        featDescription = request.POST['featDescription']
+        if featName is not None and featDescription is not None:
+            f = feat(featName=featName, featDescription=featDescription)
+            f.save
+        else:
+            #TODO
+    else:
+    return render(
+            request,
+            'register.html',
+            {},
+            context)
+
 def index(request):
     return render(request, 'index.html')
 
