@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n)hy%bi066*un5__*47o82c!6#l*9c=geew^ha&y2x*ouy=b^3'
+SECRET_KEY = 'zm^g(@5!cthaa()m79h5ubtw3bqzl50-h^_84*4uww6an^vjhb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'DMM.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'DMMdjango.herokuapp.com']
 
 
 # Application definition
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_waitress',
     'DMM',
-    'web',
+    'web'
 ]
 
 MIDDLEWARE = [
@@ -119,10 +119,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+# THE BELOW IS NOT SUITABLE FOR PRODUCTION - THERE ARE MANY WAYS TO EASILY ADAPT THIS FOR PRODUCTION THOUGH
+# SEE THE ABOVE URL FOR DETAILS
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
-STATIC_DIRS = {
+STATIC_DIRS = [
     os.path.join(PROJECT_ROOT, 'static')
-}
+]
