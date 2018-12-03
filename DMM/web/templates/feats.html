@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Feats
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Feats:</h1>
+    <p>(Create feats <a href="/create_feat">here</a>)</p>
+        <table class="table">
+            <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Modify</th>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <form id="feat_form" method="post" action="/feats" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <td><textarea required form="feat_form" rows="1" cols="40" name="featDescription" class="form-control">{{ item.featName }}</textarea></td>
+                        <td><textarea required form="feat_form" rows="8" cols="80" name="featDescription" class="form-control">{{ item.featDescription }}</textarea></td>
+                        <td>TODO</td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

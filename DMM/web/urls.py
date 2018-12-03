@@ -9,6 +9,6 @@ urlpatterns = [
     path('logout', user_logout),
     path('login', user_login),
     path('register', register),
-    path('posts', posts),
+    path('feats', feats),
     re_path('', index),
 ]

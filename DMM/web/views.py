@@ -14,7 +14,7 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/posts')
+            return redirect('/')
         else:
             return redirect('/register')
     else:
@@ -76,8 +76,8 @@ def view(request):
     return render(request, 'view.html')
 
 @login_required
-def posts(request):
+def feats(request):
     context = RequestContext(request)
     userName = UserProfile.objects.get(user = request.user)
     items = list(Feat.objects.filter(userName = userName))
-    return render(request, 'posts.html', {'items' : items}, context)
+    return render(request, 'feats.html', {'items' : items}, context)
