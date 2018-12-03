@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Feats
+    Equipment
 {% endblock %}
 
 {% block css %}
@@ -11,11 +11,12 @@
 
 {% block body %}
     <div class="container-fluid post">
-        <h1>Feats:</h1>
-    <p>(Create feats <a href="/create_feat">here</a>)</p>
+        <h1>Equipment:</h1>
+    <p>(Create equipment <a href="/create_feat">here</a>)</p>
         <table class="table">
             <thead>
                 <th scope="col">Name</th>
+                <th scope="col">Rarity</th>
                 <th scope="col">Description</th>
                 <th scope="col">Modify</th>
             </thead>
@@ -25,7 +26,8 @@
                     <form id="feat_form" method="post" action="/feats" enctype="multipart/form-data">
                     {% csrf_token %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.featDescription }}</td>
+                        <td>{{ item.itemRarity}}
+                        <td>{{ item.itemDescription }}</td>
                         <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
                     </form>
                 </tr>

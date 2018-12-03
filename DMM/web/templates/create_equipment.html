@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Equipment
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Create Equipment</h1>
+        {% if created %}
+            <p class="my-4"><strong>Equipment added! View it <a href="/equipment">here</a></strong></p>
+        {% else %}
+        <p>(View equipment <a href="/equipment">here</a>)</p>
+        <strong>Equipment is any object an adventurer will carry in their travels.</strong><br>
+
+        <form id="item_form" method="post" action="/create_equipment" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button name="submit" type="submit" class="btn btn-primary">Create Equipment</button><br>
+            <label for="name">Name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Item Name" value="" size="50" required>
+            <label for="itemRarity">Rarity</label>
+            <input name="itemRarity" type="text" class="form-control" id="itemRarity" placeholder="Item Rarity" value="" size="50" required>
+            <label for="itemDescription">Description</label>
+        </form>
+        <textarea required form="item_form" rows="8" cols="80" name="itemDescription" class="form-control" placeholder="Item Description"></textarea>
+        {% endif %}
+    </div>
+{% endblock %}

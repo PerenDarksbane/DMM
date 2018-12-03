@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Feats
+    Create Feats
 {% endblock %}
 
 {% block css %}
@@ -21,8 +21,8 @@
         <form id="feat_form" method="post" action="/create_feat" enctype="multipart/form-data">
             {% csrf_token %}
             <button name="submit" type="submit" class="btn btn-primary">Create Feat</button><br>
-            <label for="featName">Name</label>
-            <input name="featName" type="text" class="form-control" id="featName" placeholder="Feat Name" value="" size="50" required>
+            <label for="name">Name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Feat Name" value="" size="50" required>
             <label for="featDescription">Description</label>
         </form>
         <textarea required form="feat_form" rows="8" cols="80" name="featDescription" class="form-control" placeholder="Feat Description"></textarea>

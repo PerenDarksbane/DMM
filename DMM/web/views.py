@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from web.models import UserForm, UserProfileForm, UserProfile, Feat
+from web.models import *
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 
 def alphabetize(element):
-    return element.featName.lower()
+    return element.name.lower()
 
 # Create your views here.
 def user_login(request):
@@ -61,21 +61,36 @@ def create_feat(request):
     context = RequestContext(request)
     created = False
     if request.method == 'POST':
-        featName = request.POST['featName']
+        name = request.POST['name']
         featDescription = request.POST['featDescription']
         userName = UserProfile.objects.get(user = request.user)
-        if featName is not None and featDescription is not None:
-            f = Feat.objects.create(featName=featName, featDescription=featDescription, userName=userName)
-            f.save
-            created = True
+        f = Feat.objects.create(name=name, featDescription=featDescription, userName=userName)
+        f.save
+        created = True
     return render(request, 'create_feat.html', {'created' : created}, context)
+
+@login_required
+def create_equipment(request):
+    context = RequestContext(request)
+    created = False
+    if request.method == 'POST':
+        name = request.POST['name']
+        itemDescription = request.POST['itemDescription']
+        itemRarity = request.POST['itemRarity']
+        userName = UserProfile.objects.get(user = request.user)
+        f = EquipmentItem.objects.create(name=name, itemDescription=itemDescription, itemRarity=itemRarity, userName=userName)
+        f.save
+        created = True
+    return render(request, 'create_equipment.html', {'created' : created}, context)
 
 def index(request):
     return render(request, 'index.html')
 
+@login_required
 def create(request):
     return render(request, 'create.html')
 
+@login_required
 def view(request):
     return render(request, 'view.html')
 
@@ -89,3 +104,14 @@ def feats(request):
     items = list(Feat.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     return render(request, 'feats.html', {'items' : items}, context)
+
+@login_required
+def equipment(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        delete = EquipmentItem.objects.get(id = request.POST['delete'])
+        delete.delete()
+    userName = UserProfile.objects.get(user = request.user)
+    items = list(EquipmentItem.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    return render(request, 'equipment.html', {'items' : items}, context)
