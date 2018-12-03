@@ -24,9 +24,9 @@
                 <tr>
                     <form id="feat_form" method="post" action="/feats" enctype="multipart/form-data">
                     {% csrf_token %}
-                        <td><textarea required form="feat_form" rows="1" cols="40" name="featDescription" class="form-control">{{ item.featName }}</textarea></td>
-                        <td><textarea required form="feat_form" rows="8" cols="80" name="featDescription" class="form-control">{{ item.featDescription }}</textarea></td>
-                        <td>TODO</td>
+                        <td>{{ item.featName }}</td>
+                        <td>{{ item.featDescription }}</td>
+                        <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
                     </form>
                 </tr>
                 {% endfor %}

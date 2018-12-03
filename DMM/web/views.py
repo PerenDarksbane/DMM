@@ -5,6 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
+
+def alphabetize(element):
+    return element.featName.lower()
+
 # Create your views here.
 def user_login(request):
     context = RequestContext(request)
@@ -78,6 +82,10 @@ def view(request):
 @login_required
 def feats(request):
     context = RequestContext(request)
+    if request.method == 'POST':
+        delete = Feat.objects.get(id = request.POST['delete'])
+        delete.delete()
     userName = UserProfile.objects.get(user = request.user)
     items = list(Feat.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
     return render(request, 'feats.html', {'items' : items}, context)
