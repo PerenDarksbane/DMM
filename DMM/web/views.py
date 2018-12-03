@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from web.models import UserForm, UserProfileForm
+from web.models import UserForm, UserProfileForm, UserProfile, Feat
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -55,27 +55,29 @@ def register(request):
 @login_required
 def create_feat(request):
     context = RequestContext(request)
-    registered = False
+    created = False
     if request.method == 'POST':
         featName = request.POST['featName']
         featDescription = request.POST['featDescription']
+        userName = UserProfile.objects.get(user = request.user)
         if featName is not None and featDescription is not None:
-            f = feat(featName=featName, featDescription=featDescription)
+            f = Feat.objects.create(featName=featName, featDescription=featDescription, userName=userName)
             f.save
-        else:
-            #TODO
-    else:
-    return render(
-            request,
-            'register.html',
-            {},
-            context)
+            created = True
+    return render(request, 'create_feat.html', {'created' : created}, context)
 
 def index(request):
     return render(request, 'index.html')
 
+def create(request):
+    return render(request, 'create.html')
+
+def view(request):
+    return render(request, 'view.html')
+
 @login_required
 def posts(request):
-    context = dict()
-    context['post_content'] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et tamen tantis vectigalibus ad liberalitatem utens etiam sine hac Pyladea amicitia multorum te benivolentia praeclare tuebere et munies. Ita redarguitur ipse a sese, convincunturque scripta eius probitate ipsius ac moribus. Ratio ista, quam defendis, praecepta, quae didicisti, quae probas, funditus evertunt amicitiam, quamvis eam Epicurus, ut facit, in caelum efferat laudibus. Ut ad minora veniam, mathematici, poëtae, musici, medici denique ex hac tamquam omnium artificum officina profecti sunt. Scientiam pollicentur, quam non erat mirum sapientiae cupido patria esse cariorem.'
-    return render(request, 'posts.html', context=context)
+    context = RequestContext(request)
+    userName = UserProfile.objects.get(user = request.user)
+    items = list(Feat.objects.filter(userName = userName))
+    return render(request, 'posts.html', {'items' : items}, context)

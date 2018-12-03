@@ -49,6 +49,7 @@ class AdventureBackground(models.Model):
     backgrounProficiencies = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
 
 class Feat(models.Model):
+    userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     featName = models.CharField(max_length=30)
     featDescription = models.TextField()
 

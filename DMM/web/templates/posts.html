@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Posts
+    Feats
 {% endblock %}
 
 {% block css %}
@@ -10,9 +10,15 @@
 {% endblock %}
 
 {% block body %}
-    <!-- Place holder site for player creation pages -->
     <div class="container-fluid post">
-        <h1>This is a DMM Post!</h1>
-        <p>{{ post_content }}</p>
+        <h1>Feats:</h1>
+        <table>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.featName }}</td>
+            <td>{{ item.featDescription }}</td>
+        </tr>
+        {% endfor %}
+        </table>
     </div>
 {% endblock %}

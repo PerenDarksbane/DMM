@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Feats
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Create a Feat</h1>
+        {% if created %}
+            <p class="my-4"><strong>Feat added! View it <a href="/feats">here</a></strong></p>
+        {% else %}
+        <strong>Feats are used by races, classes and adventurer's to give them special abilities.</strong><br>
+
+        <form id="feat_form" method="post" action="/create_feat" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button name="submit" type="submit" class="btn btn-primary">Create Feat</button><br>
+            <label for="featName">Name</label>
+            <input name="featName" type="text" class="form-control" id="featName" placeholder="Feat Name" value="" size="50" required>
+            <label for="featDescription">Description</label>
+        </form>
+        <textarea required form="feat_form" rows="8" cols="80" name="featDescription" class="form-control" placeholder="Feat Description"></textarea>
+        {% endif %}
+    </div>
+{% endblock %}

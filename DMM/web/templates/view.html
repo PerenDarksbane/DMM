@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    View
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <!-- Uses bootstrap and static CSS classes -->
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4">View</h1>
+        <p class="lead">A place to view your creations.</p>
+        <hr class="my-4">
+        <ul>
+            <li>
+                <a href="/posts">Posts</a>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
