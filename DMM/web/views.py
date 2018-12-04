@@ -122,17 +122,16 @@ def create_races(request):
         statMod = STR + ", " + DEX + ", " + CON + ", " + INT + ", " + WIS + ", " + CHA
         raceFeats = ""
         for f in feats:
-            #TODO
-            feat = request.POST['raceFeats' + str(f.id)]
-            if feat:
-                raceFeats += str(feat) + ","
-        raceFeats.strip(",")
+            query = 'raceFeats' + str(f.id)
+            if query in request.POST:
+                raceFeats += str(request.POST[query]) + ","
+        raceFeats = raceFeats.strip(",")
         raceSpells = ""
         for s in spells:
-            spell = request.POST['raceFeats' + str(s.id)]
-            if spell:
-                raceSpells += str(spell) + ","
-        raceSpells.strip(",")
+            query = 'raceSpells' + str(s.id)
+            if query in request.POST:
+                raceSpells += str(request.POST[query]) + ","
+        raceSpells = raceSpells.strip(",")
         raceSize = request.POST["raceSize"]
         raceSpeed = request.POST["raceSpeed"]
         raceProficiencies = request.POST["raceProficiencies"]
@@ -197,15 +196,15 @@ def races(request):
     items.sort(key=alphabetize)
     for item in items:
         raceFeats = ""
-        feats = item.raceFeats.split(",")
-        if feats:
+        if not item.raceFeats == "":
+            feats = item.raceFeats.split(",")
             for f in feats:
                 feat = Feat.objects.get(id = f)
                 raceFeats += feat.name + ", "
             item.raceFeats = raceFeats.strip(", ")
         raceSpells = ""
-        spells = item.raceSpells.split(",")
-        if spells:
+        if not item.raceSpells == "":
+            spells = item.raceSpells.split(",")
             for s in spells:
                 spell = Spell.objects.get(id = s)
                 raceSpells += spell.name + ", "
