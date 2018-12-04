@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Equipment
+    Spells
 {% endblock %}
 
 {% block css %}
@@ -11,23 +11,31 @@
 
 {% block body %}
     <div class="container-fluid post">
-        <h1>Equipment:</h1>
-    <p>(Create equipment <a href="/create_equipment">here</a>)</p>
+        <h1>Spells:</h1>
+    <p>(Create spells <a href="/create_spells">here</a>)</p>
         <table class="table">
             <thead>
                 <th scope="col">Name</th>
-                <th scope="col">Rarity</th>
                 <th scope="col">Description</th>
+                <th scope="col">Level</th>
+                <th scope="col">Casting Time</th>
+                <th scope="col">Range</th>
+                <th scope="col">Components</th>
+                <th scope="col">Duration</th>
                 <th scope="col">Modify</th>
             </thead>
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <form id="feat_form" method="post" action="/equipment" enctype="multipart/form-data">
+                    <form id="feat_form" method="post" action="/spells" enctype="multipart/form-data">
                     {% csrf_token %}
                         <td>{{ item.name }}</td>
-                        <td>{{ item.itemRarity}}</td>
-                        <td>{{ item.itemDescription }}</td>
+                        <td>{{ item.spellDescription }}</td>
+                        <td>{{ item.spellLevel }}</td>
+                        <td>{{ item.spellCastTime }}</td>
+                        <td>{{ item.spellRange }}</td>
+                        <td>{{ item.spellComponents }}</td>
+                        <td>{{ item.spellDuration }}</td>
                         <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
                     </form>
                 </tr>

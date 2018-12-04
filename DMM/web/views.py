@@ -83,6 +83,24 @@ def create_equipment(request):
         created = True
     return render(request, 'create_equipment.html', {'created' : created}, context)
 
+@login_required
+def create_spells(request):
+    context = RequestContext(request)
+    created = False
+    if request.method == 'POST':
+        name = request.POST['name']
+        spellDescription = request.POST['spellDescription']
+        spellLevel = request.POST['spellLevel']
+        spellCastTime = request.POST['spellCastTime']
+        spellRange = request.POST['spellRange']
+        spellComponents = request.POST['spellComponents']
+        spellDuration = request.POST['spellDuration']
+        userName = UserProfile.objects.get(user = request.user)
+        f = Spell.objects.create(name=name, spellDescription=spellDescription, spellLevel=spellLevel, spellCastTime=spellCastTime, spellRange=spellRange, spellComponents=spellComponents, spellDuration=spellDuration, userName=userName)
+        f.save
+        created = True
+    return render(request, 'create_spells.html', {'created' : created}, context)
+
 def index(request):
     return render(request, 'index.html')
 
@@ -115,3 +133,14 @@ def equipment(request):
     items = list(EquipmentItem.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     return render(request, 'equipment.html', {'items' : items}, context)
+
+@login_required
+def spells(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        delete = Spell.objects.get(id = request.POST['delete'])
+        delete.delete()
+    userName = UserProfile.objects.get(user = request.user)
+    items = list(Spell.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    return render(request, 'spells.html', {'items' : items}, context)
