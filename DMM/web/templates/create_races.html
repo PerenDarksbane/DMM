@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Races
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Create Races</h1>
+        {% if created %}
+            <p class="my-4"><strong>Race added! View it <a href="/races">here</a></strong></p>
+        {% else %}
+        <p>(View races <a href="/races">here</a>)</p>
+        <strong>Adventurers of all shapes and sizes.</strong><br>
+
+        <form id="race_form" method="post" action="/create_races" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button name="submit" type="submit" class="btn btn-primary">Create Race</button><br>
+            <label for="name">Name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Race Name" value="" size="50" required>
+            <label for="raceDescription">Description</label>
+            <textarea required form="race_form" rows="8" cols="80" name="raceDescription" class="form-control" placeholder="Race Description"></textarea>
+            <label for="STR">Strength Modifier</label>
+            <input name="STR" type="number" min="-5" max="5" class="form-control" id="STR" placeholder="Strength Mod (-5 to 5)" value="" size="50" required>
+            <label for="DEX">Dexterity Modifier</label>
+            <input name="DEX" type="number" min="-5" max="5" class="form-control" id="DEX" placeholder="Dexterity Mod (-5 to 5)" value="" size="50" required>
+            <label for="CON">Constitution Modifier</label>
+            <input name="CON" type="number" min="-5" max="5" class="form-control" id="CON" placeholder="Constitution Mod (-5 to 5)" value="" size="50" required>
+            <label for="INT">Intelligence Modifier</label>
+            <input name="INT" type="number" min="-5" max="5" class="form-control" id="INT" placeholder="Intelligence Mod (-5 to 5)" value="" size="50" required>
+            <label for="WIS">Wisdom Modifier</label>
+            <input name="WIS" type="number" min="-5" max="5" class="form-control" id="WIS" placeholder="Wisdom Mod (-5 to 5)" value="" size="50" required>
+            <label for="CHA">Charisma Modifier</label>
+            <input name="CHA" type="number" min="-5" max="5" class="form-control" id="CHA" placeholder="Charisma Mod (-5 to 5)" value="" size="50" required>
+            <label for="raceFeats">Feats</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                View Feats
+            </button><br>
+            <div class="collapse" id="collapse1">
+                <div>
+                    {% for feat in feats %}
+                        <input type="checkbox" name="raceFeat{{ feat.id }}" value="{{ feat.id }}"> {{ feat.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="raceSpells">Spells</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                View Spells
+            </button><br>
+            <div class="collapse" id="collapse2">
+                <div>
+                    {% for spell in spells %}
+                        <input type="checkbox" name="raceSpells{{ spell.id }}" value="{{ spell.id }}"> {{ spell.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="raceSize">Size</label>
+            <input name="raceSize" type="text" class="form-control" id="raceSize" placeholder="Race Size" value="" size="50" required>
+            <label for="raceSpeed">Speed</label>
+            <input name="raceSpeed" type="text" class="form-control" id="raceSpeed" placeholder="Race Speed" value="" size="50" required>
+            <label for="raceProficiencies">Proficiencies</label>
+            <textarea required form="race_form" rows="8" cols="80" name="raceProficiencies" class="form-control" placeholder="Race Proficiencies (includes languages)"></textarea>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

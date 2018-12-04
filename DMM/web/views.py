@@ -78,8 +78,8 @@ def create_equipment(request):
         itemDescription = request.POST['itemDescription']
         itemRarity = request.POST['itemRarity']
         userName = UserProfile.objects.get(user = request.user)
-        f = EquipmentItem.objects.create(name=name, itemDescription=itemDescription, itemRarity=itemRarity, userName=userName)
-        f.save
+        e = EquipmentItem.objects.create(name=name, itemDescription=itemDescription, itemRarity=itemRarity, userName=userName)
+        e.save
         created = True
     return render(request, 'create_equipment.html', {'created' : created}, context)
 
@@ -96,10 +96,51 @@ def create_spells(request):
         spellComponents = request.POST['spellComponents']
         spellDuration = request.POST['spellDuration']
         userName = UserProfile.objects.get(user = request.user)
-        f = Spell.objects.create(name=name, spellDescription=spellDescription, spellLevel=spellLevel, spellCastTime=spellCastTime, spellRange=spellRange, spellComponents=spellComponents, spellDuration=spellDuration, userName=userName)
-        f.save
+        s = Spell.objects.create(name=name, spellDescription=spellDescription, spellLevel=spellLevel, spellCastTime=spellCastTime, spellRange=spellRange, spellComponents=spellComponents, spellDuration=spellDuration, userName=userName)
+        s.save
         created = True
     return render(request, 'create_spells.html', {'created' : created}, context)
+
+@login_required
+def create_races(request):
+    context = RequestContext(request)
+    created = False
+    userName = UserProfile.objects.get(user = request.user)
+    feats = list(Feat.objects.filter(userName = userName))
+    feats.sort(key=alphabetize)
+    spells = list(Spell.objects.filter(userName = userName))
+    spells.sort(key=alphabetize)
+    if request.method == 'POST':
+        name = request.POST['name']
+        raceDescription = request.POST['raceDescription']
+        STR = str(request.POST['STR'])
+        DEX = str(request.POST['DEX'])
+        CON = str(request.POST['CON'])
+        INT = str(request.POST['INT'])
+        WIS = str(request.POST['WIS'])
+        CHA = str(request.POST['CHA'])
+        statMod = STR + ", " + DEX + ", " + CON + ", " + INT + ", " + WIS + ", " + CHA
+        raceFeats = ""
+        for f in feats:
+            #TODO
+            feat = request.POST['raceFeats' + str(f.id)]
+            if feat:
+                raceFeats += str(feat) + ","
+        raceFeats.strip(",")
+        raceSpells = ""
+        for s in spells:
+            spell = request.POST['raceFeats' + str(s.id)]
+            if spell:
+                raceSpells += str(spell) + ","
+        raceSpells.strip(",")
+        raceSize = request.POST["raceSize"]
+        raceSpeed = request.POST["raceSpeed"]
+        raceProficiencies = request.POST["raceProficiencies"]
+        userName = UserProfile.objects.get(user = request.user)
+        r = AdventurerRace.objects.create(name=name, raceDescription=raceDescription, statMod=statMod, raceFeats=raceFeats, raceSpells=raceSpells, raceSize=raceSize, raceSpeed=raceSpeed, raceProficiencies=raceProficiencies, userName=userName)
+        r.save
+        created = True
+    return render(request, 'create_races.html', {'created' : created, 'feats' : feats, 'spells' : spells}, context)
 
 def index(request):
     return render(request, 'index.html')
@@ -144,3 +185,29 @@ def spells(request):
     items = list(Spell.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     return render(request, 'spells.html', {'items' : items}, context)
+
+@login_required
+def races(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        delete = AdventurerRace.objects.get(id = request.POST['delete'])
+        delete.delete()
+    userName = UserProfile.objects.get(user = request.user)
+    items = list(AdventurerRace.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    for item in items:
+        raceFeats = ""
+        feats = item.raceFeats.split(",")
+        if feats:
+            for f in feats:
+                feat = Feat.objects.get(id = f)
+                raceFeats += feat.name + ", "
+            item.raceFeats = raceFeats.strip(", ")
+        raceSpells = ""
+        spells = item.raceSpells.split(",")
+        if spells:
+            for s in spells:
+                spell = Spell.objects.get(id = s)
+                raceSpells += spell.name + ", "
+            item.raceSpells = raceSpells.strip(", ")
+    return render(request, 'races.html', {'items' : items}, context)

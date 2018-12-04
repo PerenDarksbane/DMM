@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Races
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Races:</h1>
+    <p>(Create races <a href="/create_races">here</a>)</p>
+        <table class="table">
+            <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Modifiers</th>
+                <th scope="col">Feats</th>
+                <th scope="col">Spells</th>
+                <th scope="col">Size</th>
+                <th scope="col">Speed</th>
+                <th scope="col">Proficiency</th>
+                <th scope="col">Modify</th>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <form id="race_form" method="post" action="/races" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.raceDescription }}</td>
+                        <td>{{ item.statMod }}</td>
+                        <td>{{ item.raceFeats }}</td>
+                        <td>{{ item.raceSpells }}</td>
+                        <td>{{ item.raceSize }}</td>
+                        <td>{{ item.raceSpeed }}</td>
+                        <td>{{ item.raceProficiencies }}</td>
+                        <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

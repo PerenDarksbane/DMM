@@ -37,10 +37,15 @@ class AdventurerClass(models.Model):
     classProficiencies = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
 
 class AdventurerRace(models.Model):
-    raceName = models.CharField(max_length=50)
+    userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    raceDescription = models.TextField()
     raceFeats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    raceSpells = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    raceSize = models.CharField(max_length=50)
+    raceSpeed = models.CharField(max_length=50)
     statMod = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    raceProficiencies = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    raceProficiencies = models.TextField()
 
 class AdventureBackground(models.Model):
     backgroundName = models.CharField(max_length=50)
