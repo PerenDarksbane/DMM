@@ -378,3 +378,66 @@ def characters(request):
                 advClass += classLevel.name + ", "
             item.advClass = advClass.strip(", ")
     return render(request, 'characters.html', {'items' : items}, context)
+
+@login_required
+def viewer(request):
+    context = RequestContext(request)
+    if request.method == 'GET':
+        return redirect('/characters')
+    if request.method == 'POST':
+        character = Adventurer.objects.get(id = request.POST['expand'])
+        race = character.advRace
+        classes = []
+        classFeats = set()
+        if not character.advClass == "":
+            classLevels = character.advClass.split(",")
+            for c in range(len(classLevels)):
+                classLevel = AdventurerClassLevel.objects.get(id = classLevels[c])
+                family = classLevel.classFamily
+                otherClasses = AdventurerClassLevel.objects.filter(classFamily = family)
+                for o in otherClasses:
+                    if o.classLevel == 1:
+                        classFeats = classFeats | set(classLevel.classFeats.split(","))
+                        for f in o.classFeats.split(","):
+                            classFeats.add(f)
+                            classLevel.classFeats = classFeats
+                            classLevel.classItems = o.classItems
+                            classLevel.classDescription = o.classDescription
+                            classLevel.classProficiencies= o.classProficiencies
+                classes.append(classLevel)
+                for cl in classLevels:
+                    altClassLevel = AdventurerClassLevel.objects.get(id = cl)
+                    if family == altClassLevel.classFamily and altClassLevel.classLevel > classLevel.classLevel:
+                        classes.pop(c)
+                        break
+        advFeats = set(character.advFeats.split(","))
+        raceFeats = set(race.raceFeats.split(","))
+        totalFeats = advFeats | raceFeats | classFeats
+        totalFeats = [x for x in totalFeats if x != ""]
+        feats = list()
+        for f in totalFeats:
+            feat = Feat.objects.get(id = f)
+            feats.append(feat)
+        advSpells = set(character.advSpells.split(","))
+        raceSpells = set(race.raceSpells.split(","))
+        totalSpells = advSpells | raceSpells
+        totalSpells = [x for x in totalSpells if x != ""]
+        spells = list()
+        for s in totalSpells:
+            spell = Spell.objects.get(id = s)
+            spells.append(spell)
+        advItems = set(character.advItems.split(","))
+        classItems = set()
+        for classLevel in classes:
+            classItems = classItems | set(classLevel.classItems.split(","))
+        totalItems = classItems | advItems
+        totalItems = [x for x in totalItems if x != ""]
+        items = list()
+        for i in totalItems:
+            item = EquipmentItem.objects.get(id = i)
+            items.append(item)
+        classes.sort(key=alphabetize)
+        feats.sort(key=alphabetize)
+        spells.sort(key=alphabetize)
+        items.sort(key=alphabetize)
+        return render(request, 'viewer.html', {'character' : character, 'race' : race, 'classes' : classes, 'feats' : feats, 'spells' : spells, 'items' : items}, context)

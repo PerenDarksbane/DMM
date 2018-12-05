@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Viewer
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Character Viewer</h1>
+        <p>(Click <a href="/characters">here</a> to go back.)</p>
+        <p>Name: {{ character.name }}</p>
+        <p>Class:{% for class in classes%} {{ class.name }}{% endfor %}
+        </p>
+        <p>Race: {{ race.name }}</p>
+        <br>
+        <p>Character Stats: {{ character.advStats }}</p>
+        <br>
+        <p>Background:<br>{{ character.advBackground }}</p>
+        <p>Race Description:<br>{{ race.name }}:<br>{{ race.raceDescription }}</p>
+        <p>Class Description:
+            {% for class in classes %}
+                <br>{{ class.name }}:<br>{{ class.classDescription }}
+            {% endfor %}
+        </p>
+        <br>
+        <p>Proficiencies:<br>
+            Class Proficiencies:<br>
+                {% for class in classes %}
+                    {{ class.name }}:<br>{{ class.classProficiencies }}<br>
+                {% endfor %}
+            Race Proficiencies:
+            <br>{{ race.raceProficiencies }}
+        </p>
+        <br>
+        <p>Feats:
+            {% for feat in feats %}
+                <br>{{ feat.name }}:<br>{{ feat.featDescription }}
+            {% endfor %}
+        </p>
+        <p>Equipment:
+            {% for item in items %}
+                <br>{{ item.name }}:<br>{{ item.itemDescription }}
+            {% endfor %}
+        </p>
+        <p>Spells:
+            {% for spell in spells %}
+                <br>{{ spell.name }}:<br>{{ spell.spellDescription }}
+            {% endfor %}
+        </p>
+        <p>Spell Slots:
+            {% for class in classes %}
+                {{ class.name }}: {{ class.classSpellslots }}<br>
+            {% endfor %}
+        </p>
+    </div>
+{% endblock %}

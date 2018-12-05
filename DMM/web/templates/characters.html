@@ -28,8 +28,6 @@
             <tbody>
                 {% for item in items %}
                 <tr>
-                    <form id="class_form" method="post" action="/characters" enctype="multipart/form-data">
-                    {% csrf_token %}
                         <td>{{ item.name }}</td>
                         <td>{{ item.advBackground }}</td>
                         <td>{{ item.advClass }}</td>
@@ -38,8 +36,16 @@
                         <td>{{ item.advItems }}</td>
                         <td>{{ item.advSpells }}</td>
                         <td>{{ item.advStats }}</td>
-                        <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
-                    </form>
+                        <td>
+                            <form id="character_form" method="post" action="/characters" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button>
+                            </form>
+                            <form id="viewer_form" method="post" action="/viewer" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <button name="expand" type="submit" class="btn btn-primary" value="{{ item.id }}">Expand</button>
+                            </form>
+                        </td>
                 </tr>
                 {% endfor %}
             </tbody>

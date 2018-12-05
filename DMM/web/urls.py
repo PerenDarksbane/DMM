@@ -10,6 +10,7 @@ urlpatterns = [
     path('races', races),
     path('classes', classes),
     path('characters', characters),
+    path('viewer', viewer),
     path('create', create),
     path('create_feat', create_feat),
     path('create_equipment', create_equipment),
