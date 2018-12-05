@@ -13,19 +13,23 @@
     <div class="container-fluid post">
         <h1>Create a Feat</h1>
         {% if created %}
+            <!-- Once a feat is created the user can create another or view created feats-->
             <p class="my-4"><strong>Feat added! View it <a href="/feats">here</a></strong></p>
+            <p class="my-4"><strong>Create another <a href="/create_feats">here</a></strong></p>
         {% else %}
         <p>(View feats <a href="/feats">here</a>)</p>
-        <strong>Feats are used by races, classes and adventurer's to give them special abilities.</strong><br>
+        <strong>Feats are used by races, classes and adventurer's to give them special abilities.</strong><br><br>
 
         <form id="feat_form" method="post" action="/create_feat" enctype="multipart/form-data">
             {% csrf_token %}
-            <button name="submit" type="submit" class="btn btn-primary">Create Feat</button><br>
+            <button name="submit" type="submit" class="btn btn-primary">Create Feat</button><br><br>
+
             <label for="name">Name</label>
-            <input name="name" type="text" class="form-control" id="name" placeholder="Feat Name" value="" size="50" required>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Feat Name" value="" size="50" required><br>
+
             <label for="featDescription">Description</label>
+            <textarea form="feat_form" rows="8" cols="80" name="featDescription" class="form-control" placeholder="Feat Description"></textarea><br>
         </form>
-        <textarea required form="feat_form" rows="8" cols="80" name="featDescription" class="form-control" placeholder="Feat Description"></textarea>
         {% endif %}
     </div>
 {% endblock %}

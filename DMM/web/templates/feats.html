@@ -12,7 +12,7 @@
 {% block body %}
     <div class="container-fluid post">
         <h1>Feats:</h1>
-    <p>(Create feats <a href="/create_feat">here</a>)</p>
+    <p>(Create feats <a href="/create_feats">here</a>)</p>
         <table class="table">
             <thead>
                 <th scope="col">Name</th>
@@ -26,6 +26,7 @@
                     {% csrf_token %}
                         <td>{{ item.name }}</td>
                         <td>{{ item.featDescription }}</td>
+                        <!-- This button lets the user delete feats -->
                         <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
                     </form>
                 </tr>

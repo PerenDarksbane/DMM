@@ -12,7 +12,7 @@ urlpatterns = [
     path('characters', characters),
     path('viewer', viewer),
     path('create', create),
-    path('create_feat', create_feat),
+    path('create_feats', create_feats),
     path('create_equipment', create_equipment),
     path('create_spells', create_spells),
     path('create_races', create_races),

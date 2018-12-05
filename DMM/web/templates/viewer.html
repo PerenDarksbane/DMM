@@ -12,50 +12,112 @@
 {% block body %}
     <div class="container-fluid post">
         <h1>Character Viewer</h1>
-        <p>(Click <a href="/characters">here</a> to go back.)</p>
-        <p>Name: {{ character.name }}</p>
-        <p>Class:{% for class in classes%} {{ class.name }}{% endfor %}
-        </p>
-        <p>Race: {{ race.name }}</p>
-        <br>
-        <p>Character Stats: {{ character.advStats }}</p>
-        <br>
-        <p>Background:<br>{{ character.advBackground }}</p>
-        <p>Race Description:<br>{{ race.name }}:<br>{{ race.raceDescription }}</p>
-        <p>Class Description:
-            {% for class in classes %}
-                <br>{{ class.name }}:<br>{{ class.classDescription }}
-            {% endfor %}
-        </p>
-        <br>
-        <p>Proficiencies:<br>
-            Class Proficiencies:<br>
+        <p>(Click <a href="/characters">here</a> to go back.)</p><br>
+
+        <div>
+            <p>Name:<br>{{ character.name }}</p>
+            <p>Class:{% for class in classes%}<br>{{ class.name }}{% endfor %}</p>
+            <p>Race:<br>{{ race.name }}</p>
+            <p>Character Stats:<br>{{ character.advStats }}</p>
+        </div>
+
+        <label>Background:</label><br>
+        <!-- Bootstrap collapse feature https://getbootstrap.com/docs/4.0/components/collapse/ -->
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+            View Background
+        </button><br>
+        <div class="collapse" id="collapse1">
+            <div>
+                {{ character.advBackground }}
+            </div>
+        </div><br>
+
+        <label>Race Description:</label><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+            View Description
+        </button><br>
+        <div class="collapse" id="collapse2">
+            <div>
+                <br>{{ race.name }}:<br>
+                {{ race.raceDescription }}<br>
+            </div>
+        </div><br>
+
+        <label>Class Description:</label><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+            View Description
+        </button><br>
+        <div class="collapse" id="collapse3">
+            <div>
                 {% for class in classes %}
-                    {{ class.name }}:<br>{{ class.classProficiencies }}<br>
+                    <br>{{ class.name }}:<br>{{ class.classDescription }}<br>
                 {% endfor %}
-            Race Proficiencies:
-            <br>{{ race.raceProficiencies }}
-        </p>
-        <br>
-        <p>Feats:
-            {% for feat in feats %}
-                <br>{{ feat.name }}:<br>{{ feat.featDescription }}
-            {% endfor %}
-        </p>
-        <p>Equipment:
-            {% for item in items %}
-                <br>{{ item.name }}:<br>{{ item.itemDescription }}
-            {% endfor %}
-        </p>
-        <p>Spells:
-            {% for spell in spells %}
-                <br>{{ spell.name }}:<br>{{ spell.spellDescription }}
-            {% endfor %}
-        </p>
-        <p>Spell Slots:
-            {% for class in classes %}
-                {{ class.name }}: {{ class.classSpellslots }}<br>
-            {% endfor %}
-        </p>
-    </div>
+            </div>
+        </div><br>
+
+        <label>Proficiencies:</label><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+            View Class Proficiencies
+        </button><br>
+        <div class="collapse" id="collapse4">
+            <div>
+                {% for class in classes %}
+                    <br>{{ class.name }}:<br>{{ class.classProficiencies }}<br>
+                {% endfor %}
+            </div>
+        </div><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+            View Race Proficiencies
+        </button><br>
+        <div class="collapse" id="collapse5">
+            <div>
+                <br>{{ race.name }}:<br>
+                {{ race.raceProficiencies }}<br>
+            </div>
+        </div><br>
+
+        <label>Feats:</label><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+            View Feats
+        </button><br>
+        <div class="collapse" id="collapse6">
+            <div>
+                {% for feat in feats %}
+                    <br>{{ feat.name }}:<br>{{ feat.featDescription }}<br>
+                {% endfor %}
+            </div>
+        </div><br>
+
+        <label>Equipment:</label><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+            View Equipment
+        </button><br>
+        <div class="collapse" id="collapse7">
+            <div>
+                {% for item in items %}
+                    <br>{{ item.name }}:<br>{{ item.itemDescription }}<br>
+                {% endfor %}
+            </div>
+        </div><br>
+
+        <label>Spells:</label><br>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+            View Spells
+        </button><br>
+        <div class="collapse" id="collapse8">
+            <div>
+                {% for spell in spells %}
+                    <br>{{ spell.name }}:<br>{{ spell.spellDescription }}<br>
+                {% endfor %}
+            </div>
+        </div><br>
+
+        <div>
+            <p>Spell Slots:
+                {% for class in classes %}
+                    <br>{{ class.name }}: {{ class.classSpellslots }}
+                {% endfor %}
+            </p>
+        </div>
+    </div><br>
 {% endblock %}

@@ -15,25 +15,14 @@
         <h1 class="display-4">Create</h1>
         <p class="lead">A place to get creative</p>
         <hr class="my-4">
-        <ul>
-            <li>
-                <a href="/create_feat">Feats</a>
-            </li>
-            <li>
-                <a href="/create_equipment">Equipment</a>
-            </li>
-            <li>
-                <a href="/create_spells">Spells</a>
-            </li>
-            <li>
-                <a href="/create_races">Races</a>
-            </li>
-            <li>
-                <a href="/create_classes">Classes</a>
-            </li>
-            <li>
-                <a href="/create_characters">Characters</a>
-            </li>
-        </ul>
+        <!-- Bootstrap list styling: https://getbootstrap.com/docs/4.0/components/list-group/ -->
+        <div class="list-group">
+            <a href="/create_feats" class="list-group-item list-group-item-action">Feats</a><br>
+            <a href="/create_equipment" class="list-group-item list-group-item-action">Equipment</a><br>
+            <a href="/create_spells" class="list-group-item list-group-item-action">Spells</a><br>
+            <a href="/create_races" class="list-group-item list-group-item-action">Races</a><br>
+            <a href="/create_classes" class="list-group-item list-group-item-action">Classes</a><br>
+            <a href="/create_characters" class="list-group-item list-group-item-action">Characters</a><br>
+        </div>
     </div>
 {% endblock %}

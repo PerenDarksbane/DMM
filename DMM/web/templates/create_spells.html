@@ -13,28 +13,37 @@
     <div class="container-fluid post">
         <h1>Create Spells</h1>
         {% if created %}
+            <!-- Once a spell is created the user can create another or view created spells-->
             <p class="my-4"><strong>Spell added! View it <a href="/spells">here</a></strong></p>
+            <p class="my-4"><strong>Create another <a href="/create_spells">here</a></strong></p>
         {% else %}
         <p>(View spells <a href="/spells">here</a>)</p>
-        <strong>Magic comes in many shapes and forms.</strong><br>
+        <strong>Magic comes in many shapes and forms.</strong><br><br>
 
         <form id="spell_form" method="post" action="/create_spells" enctype="multipart/form-data">
             {% csrf_token %}
-            <button name="submit" type="submit" class="btn btn-primary">Create Spell</button><br>
+            <button name="submit" type="submit" class="btn btn-primary">Create Spell</button><br><br>
+
             <label for="name">Name</label>
-            <input name="name" type="text" class="form-control" id="name" placeholder="Spell Name" value="" size="50" required>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Spell Name" value="" size="50" required><br>
+
             <label for="spellDescription">Description</label>
-            <textarea required form="spell_form" rows="8" cols="80" name="spellDescription" class="form-control" placeholder="Spell Description (Should Include Spell School)"></textarea>
+            <textarea form="spell_form" rows="8" cols="80" name="spellDescription" class="form-control" placeholder="Spell Description (Should Include Spell School)"></textarea><br>
+
             <label for="spellLevel">Level</label>
-            <input name="spellLevel" type="number" min="0" max="9" class="form-control" id="spellLevel" placeholder="Spell Level" value="" size="50" required>
+            <input name="spellLevel" type="number" min="0" max="9" class="form-control" id="spellLevel" placeholder="Spell Level" value="0" size="50" required><br>
+
             <label for="spellCastTime">Casting Time</label>
-            <input name="spellCastTime" type="text" class="form-control" id="spellCastTime" placeholder="Spell Casting Time" value="" size="50" required>
+            <input name="spellCastTime" type="text" class="form-control" id="spellCastTime" placeholder="Spell Casting Time" value="" size="50"><br>
+
             <label for="spellRange">Range</label>
-            <input name="spellRange" type="text" class="form-control" id="spellRange" placeholder="Spell Range" value="" size="50" required>
+            <input name="spellRange" type="text" class="form-control" id="spellRange" placeholder="Spell Range" value="" size="50"><br>
+
             <label for="spellComponents">Components</label>
-            <textarea required form="spell_form" rows="8" cols="80" name="spellComponents" class="form-control" placeholder="Spell Components (Verbal, Somatic, Material(...))"></textarea>
+            <textarea form="spell_form" rows="8" cols="80" name="spellComponents" class="form-control" placeholder="Spell Components (Verbal, Somatic, Material(...))"></textarea><br>
+
             <label for="spellDuration">Duration</label>
-            <input name="spellDuration" type="text" class="form-control" id="spellDuration" placeholder="Spell Duration" value="" size="50" required>
+            <input name="spellDuration" type="text" class="form-control" id="spellDuration" placeholder="Spell Duration" value="" size="50"><br>
         </form>
         {% endif %}
     </div>

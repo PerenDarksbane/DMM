@@ -15,25 +15,14 @@
         <h1 class="display-4">View</h1>
         <p class="lead">A place to view your creations.</p>
         <hr class="my-4">
-        <ul>
-            <li>
-                <a href="/feats">Feats</a>
-            </li>
-            <li>
-                <a href="/equipment">Equipment</a>
-            </li>
-            <li>
-                <a href="/spells">Spells</a>
-            </li>
-            <li>
-                <a href="/races">Races</a>
-            </li>
-            <li>
-                <a href="/classes">Classes</a>
-            </li>
-            <li>
-                <a href="/characters">Characters</a>
-            </li>
-        </ul>
+        <!-- Bootstrap list styling: https://getbootstrap.com/docs/4.0/components/list-group/ -->
+        <div class="list-group">
+            <a href="/feats" class="list-group-item list-group-item-action">Feats</a><br>
+            <a href="/equipment" class="list-group-item list-group-item-action">Equipment</a><br>
+            <a href="/spells" class="list-group-item list-group-item-action">Spells</a><br>
+            <a href="/races" class="list-group-item list-group-item-action">Races</a><br>
+            <a href="/classes" class="list-group-item list-group-item-action">Classes</a><br>
+            <a href="/characters" class="list-group-item list-group-item-action">Characters</a><br>
+        </div>
     </div>
 {% endblock %}

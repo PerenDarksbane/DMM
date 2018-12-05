@@ -57,7 +57,7 @@ def register(request):
             context)
 
 @login_required
-def create_feat(request):
+def create_feats(request):
     context = RequestContext(request)
     created = False
     if request.method == 'POST':
@@ -67,7 +67,7 @@ def create_feat(request):
         f = Feat.objects.create(name=name, featDescription=featDescription, userName=userName)
         f.save
         created = True
-    return render(request, 'create_feat.html', {'created' : created}, context)
+    return render(request, 'create_feats.html', {'created' : created}, context)
 
 @login_required
 def create_equipment(request):

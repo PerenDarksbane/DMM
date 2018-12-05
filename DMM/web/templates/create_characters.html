@@ -18,13 +18,12 @@
             <p class="my-4"><strong>Character added! View it <a href="/characters">here</a></strong></p>
             <p class="my-4"><strong>Create another <a href="/create_characters">here</a></strong></p>
         {% else %}
-
         <p>(View characters <a href="/characters">here</a>)</p>
-        <strong>Go forth and change the world!</strong><br>
+        <strong>Go forth and change the world!</strong><br><br>
 
         <form id="character_form" method="post" action="/create_characters" enctype="multipart/form-data">
             {% csrf_token %}
-            <button name="submit" type="submit" class="btn btn-primary">Create Character</button><br>
+            <button name="submit" type="submit" class="btn btn-primary">Create Character</button><br><br>
 
             <label for="name">Name</label>
             <input name="name" type="text" maxlength="50" class="form-control" id="name" placeholder="Character Name" value="" size="50" required><br>
