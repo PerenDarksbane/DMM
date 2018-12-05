@@ -2,6 +2,7 @@ from django.urls import re_path, path
 
 from web.views import *
 
+# This ensures that redirects go to the right view in views.py
 urlpatterns = [
     path('view', view),
     path('feats', feats),
@@ -21,5 +22,6 @@ urlpatterns = [
     path('logout', user_logout),
     path('login', user_login),
     path('register', register),
+    # When not given a valid url, the program will redirect them to the main page
     re_path('', index),
 ]

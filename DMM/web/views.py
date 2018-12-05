@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.template import RequestContext
 from web.models import *
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 
@@ -11,18 +10,24 @@ def alphabetize(element):
 
 # Create your views here.
 def user_login(request):
+    # This line is needed when passing information to a html page via render.
     context = RequestContext(request)
+    # When user submits credentials...
     if request.method == 'POST':
+        # Get the username and password given by user
         username = request.POST['username']
         password = request.POST['password']
+        # Test if it is a valid user
         user = authenticate(request, username=username, password=password)
+        # If a valid user is returned, log the user in. Otherwise, render error page.
         if user is not None:
             login(request, user)
             return redirect('/')
         else:
-            return redirect('/register')
+            return render(request, 'error.html', {'message' : "Invalid Login Credentials"}, context)
+    # When user visits webpage via get display log in form.
     else:
-        return render(request, 'login.html', {}, context)
+        return render(request, 'login.html')
 
 @login_required
 def user_logout(request):
@@ -231,7 +236,7 @@ def create_characters(request):
                 advItems += str(request.POST[query]) + ","
         advItems = advItems.strip(",")
         if 'advRace' not in request.POST:
-            return render(request, 'error.html', {'message' : "No race selected."}, context)
+            return render(request, 'error.html', {'message' : "No Race Selected."}, context)
         advRace = AdventurerRace.objects.get(id=request.POST['advRace'])
         advClass = ""
         for c in classLevels:

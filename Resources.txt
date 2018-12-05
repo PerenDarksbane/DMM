@@ -3,6 +3,3 @@ These tutorials were used to help create this site:
 https://www.youtube.com/watch?v=-80wbZiSPRY
 http://www.tangowithdjango.com/book/chapters/login.html
 
-TODO:
-
-Settings.py fix static handling for deployment

@@ -9,15 +9,11 @@ class UserProfile(models.Model):
     # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-
     # The additional attributes we wish to include.
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
-    # Override the __unicode__() method to return out something meaningful!
-    def __unicode__(self):
-        return self.user.username
-
+# These forms are used to create a new user during registration. Registration and login functionality was implemented based on this tutorial: http://www.tangowithdjango.com/book/chapters/login.html
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
@@ -30,8 +26,10 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('website', 'picture')
 
+# This class is representative of a standard model used in this project. It is directly linked to a user for login purposes. It has a name and then a variety of properties.
 class AdventurerClassLevel(models.Model):
     userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    # 50 was choosen as a standard max_length for all charfields.
     name = models.CharField(max_length=50)
     classFamily = models.CharField(max_length=50)
     classDescription = models.TextField()
@@ -65,7 +63,7 @@ class Spell(models.Model):
     spellDescription = models.TextField()
     spellLevel = models.PositiveSmallIntegerField()
     spellCastTime = models.CharField(max_length=50)
-    spellRange = models.CharField(max_length=100)
+    spellRange = models.CharField(max_length=50)
     spellComponents = models.TextField()
     spellDuration = models.CharField(max_length=50)
 
