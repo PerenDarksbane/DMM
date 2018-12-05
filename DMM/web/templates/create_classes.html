@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Classes
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Create Classes</h1>
+        {% if created %}
+            <p class="my-4"><strong>Class added! View it <a href="/classes">here</a></strong></p>
+        {% else %}
+        <p>(View classes <a href="/classes">here</a>)</p>
+        <strong>An adventurer's true source of power.</strong><br>
+
+        <form id="class_form" method="post" action="/create_classes" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button name="submit" type="submit" class="btn btn-primary">Create Class</button><br>
+            <label for="name">Name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Class Name" value="" size="50" required>
+            <label for="classDescription">Description</label>
+            <textarea required form="class_form" rows="8" cols="80" name="classDescription" class="form-control" placeholder="Class Description"></textarea>
+            <label for="classFamily">Family</label>
+            <input name="classFamily" type="text" class="form-control" id="classFamily" placeholder="Class Family" value="" size="50" required>
+            <label for="classProficiencyBonus">Proficiency Bonus</label>
+            <input name="classProficiencyBonus" type="number" min="0" max="10" class="form-control" id="classProficiencyBonus" placeholder="Proficiency Bonus (0 to 10)" value="" size="50" required>
+            <label for="classLevel">Level</label>
+            <input name="classLevel" type="number" min="0" max="20" class="form-control" id="classLevel" placeholder="Class Level (0 to 20)" value="" size="50" required>
+            <label for="classHitDice">Hit Dice</label>
+            <input name="classHitDice" type="text" class="form-control" id="classHitDice" placeholder="Class Hit Dice" value="" size="50" required>
+            <label for="classFeats">Feats</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                View Feats
+            </button><br>
+            <div class="collapse" id="collapse1">
+                <div>
+                    {% for feat in feats %}
+                        <input type="checkbox" name="classFeats{{ feat.id }}" value="{{ feat.id }}"> {{ feat.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="0">Cantrip Spell Slots</label>
+            <input name="0" type="number" min="0" max="10" class="form-control" id="0" placeholder="Cantrip Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="1">Level 1 Spell Slots</label>
+            <input name="1" type="number" min="0" max="10" class="form-control" id="1" placeholder="Level 1 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="2">Level 2 Spell Slots</label>
+            <input name="2" type="number" min="0" max="10" class="form-control" id="2" placeholder="Level 2 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="3">Level 3 Spell Slots</label>
+            <input name="3" type="number" min="0" max="10" class="form-control" id="3" placeholder="Level 3 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="4">Level 4 Spell Slots</label>
+            <input name="4" type="number" min="0" max="10" class="form-control" id="4" placeholder="Level 4 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="5">Level 5 Spell Slots</label>
+            <input name="5" type="number" min="0" max="10" class="form-control" id="5" placeholder="Level 5 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="6">Level 6 Spell Slots</label>
+            <input name="6" type="number" min="0" max="10" class="form-control" id="6" placeholder="Level 6 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="7">Level 7 Spell Slots</label>
+            <input name="7" type="number" min="0" max="10" class="form-control" id="7" placeholder="Level 7 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="8">Level 8 Spell Slots</label>
+            <input name="8" type="number" min="0" max="10" class="form-control" id="8" placeholder="Level 8 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="9">Level 9 Spell Slots</label>
+            <input name="9" type="number" min="0" max="10" class="form-control" id="9" placeholder="Level 9 Spell Slots (0 to 10)" value="" size="50" required>
+            <label for="classItems">Items</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                View Items
+            </button><br>
+            <div class="collapse" id="collapse2">
+                <div>
+                    {% for item in items %}
+                        <input type="checkbox" name="classItems{{ item.id }}" value="{{ item.id }}"> {{ item.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="classProficiencies">Proficiencies</label>
+            <textarea required form="class_form" rows="8" cols="80" name="classProficiencies" class="form-control" placeholder="Class Proficiencies"></textarea>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

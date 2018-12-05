@@ -141,6 +141,52 @@ def create_races(request):
         created = True
     return render(request, 'create_races.html', {'created' : created, 'feats' : feats, 'spells' : spells}, context)
 
+@login_required
+def create_classes(request):
+    context = RequestContext(request)
+    created = False
+    userName = UserProfile.objects.get(user = request.user)
+    feats = list(Feat.objects.filter(userName = userName))
+    feats.sort(key=alphabetize)
+    items = list(EquipmentItem.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    if request.method == 'POST':
+        name = request.POST['name']
+        classDescription = request.POST['classDescription']
+        classProficiencyBonus = request.POST['classProficiencyBonus']
+        classFamily = request.POST['classFamily']
+        classLevel = request.POST['classLevel']
+        classHitDice = request.POST['classHitDice']
+        SS0 = str(request.POST['0'])
+        SS1 = str(request.POST['1'])
+        SS2 = str(request.POST['2'])
+        SS3 = str(request.POST['3'])
+        SS4 = str(request.POST['4'])
+        SS5 = str(request.POST['5'])
+        SS6 = str(request.POST['6'])
+        SS7 = str(request.POST['7'])
+        SS8 = str(request.POST['8'])
+        SS9 = str(request.POST['9'])
+        classSpellslots = SS0 + ", " + SS1 + ", " + SS2 + ", " + SS3 + ", " + SS4 + ", " + SS5 + ", " + SS6 + ", " + SS7 + ", " + SS8 + ", " + SS9
+        classFeats = ""
+        for f in feats:
+            query = 'classFeats' + str(f.id)
+            if query in request.POST:
+                classFeats += str(request.POST[query]) + ","
+        classFeats = classFeats.strip(",")
+        classItems = ""
+        for i in items:
+            query = 'classItems' + str(i.id)
+            if query in request.POST:
+                classItems += str(request.POST[query]) + ","
+        classItems = classItems.strip(",")
+        classProficiencies = request.POST["classProficiencies"]
+        userName = UserProfile.objects.get(user = request.user)
+        r = AdventurerClassLevel.objects.create(name=name, classDescription=classDescription, classProficiencyBonus=classProficiencyBonus, classFamily=classFamily, classLevel=classLevel, classHitDice=classHitDice, classSpellslots=classSpellslots, classFeats=classFeats, classItems=classItems, classProficiencies=classProficiencies, userName=userName)
+        r.save
+        created = True
+    return render(request, 'create_classes.html', {'created' : created, 'feats' : feats, 'items' : items}, context)
+
 def index(request):
     return render(request, 'index.html')
 
@@ -210,3 +256,29 @@ def races(request):
                 raceSpells += spell.name + ", "
             item.raceSpells = raceSpells.strip(", ")
     return render(request, 'races.html', {'items' : items}, context)
+
+@login_required
+def classes(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        delete = AdventurerClassLevel.objects.get(id = request.POST['delete'])
+        delete.delete()
+    userName = UserProfile.objects.get(user = request.user)
+    items = list(AdventurerClassLevel.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    for item in items:
+        classFeats = ""
+        if not item.classFeats == "":
+            feats = item.classFeats.split(",")
+            for f in feats:
+                feat = Feat.objects.get(id = f)
+                classFeats += feat.name + ", "
+            item.classFeats = classFeats.strip(", ")
+        classEquipment = ""
+        if not item.classItems == "":
+            eItems = item.classItems.split(",")
+            for e in eItems:
+                equipmentItem = EquipmentItem.objects.get(id = e)
+                classEquipment += equipmentItem.name + ", "
+            item.classItems = classEquipment.strip(", ")
+    return render(request, 'classes.html', {'items' : items}, context)

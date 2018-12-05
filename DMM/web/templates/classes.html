@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Classes
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Classes:</h1>
+    <p>(Create classes <a href="/create_classes">here</a>)</p>
+        <table class="table">
+            <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Family</th>
+                <th scope="col">Proficiency Bonus</th>
+                <th scope="col">Level</th>
+                <th scope="col">Hit Dice</th>
+                <th scope="col">Feats</th>
+                <th scope="col">Spell Slots</th>
+                <th scope="col">Items</th>
+                <th scope="col">Proficiencies</th>
+                <th scope="col">Modify</th>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <form id="class_form" method="post" action="/classes" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.classDescription }}</td>
+                        <td>{{ item.classFamily }}</td>
+                        <td>{{ item.classProficiencyBonus }}</td>
+                        <td>{{ item.classLevel }}</td>
+                        <td>{{ item.classHitDice }}</td>
+                        <td>{{ item.classFeats }}</td>
+                        <td>{{ item.classSpellslots }}</td>
+                        <td>{{ item.classItems }}</td>
+                        <td>{{ item.classProficiencies }}</td>
+                        <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -30,11 +30,18 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('website', 'picture')
 
-class AdventurerClass(models.Model):
-    className = models.CharField(max_length=50)
+class AdventurerClassLevel(models.Model):
+    userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    classFamily = models.CharField(max_length=50)
+    classDescription = models.TextField()
+    classProficiencyBonus = models.PositiveSmallIntegerField()
+    classLevel = models.PositiveSmallIntegerField()
+    classHitDice = models.CharField(max_length=50)
     classFeats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    classSpellslots = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
     classItems = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    classProficiencies = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    classProficiencies = models.TextField()
 
 class AdventurerRace(models.Model):
     userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -46,12 +53,6 @@ class AdventurerRace(models.Model):
     raceSpeed = models.CharField(max_length=50)
     statMod = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
     raceProficiencies = models.TextField()
-
-class AdventureBackground(models.Model):
-    backgroundName = models.CharField(max_length=50)
-    backgrounFeats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    backgrounItems = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    backgrounProficiencies = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
 
 class Feat(models.Model):
     userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -74,23 +75,12 @@ class EquipmentItem(models.Model):
     itemDescription = models.TextField()
     itemRarity = models.CharField(max_length=50)
 
-class Proficiency(models.Model):
-    proficiencyName = models.CharField(max_length=50)
-
 class Adventurer(models.Model):
-    advName = models.CharField(max_length=50)
-    alignment = models.CharField(max_length=2, blank=True)
-    experience = models.PositiveIntegerField(blank=True)
     userName = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    advBackground = models.TextField()
     advClass = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
     advRace = models.ForeignKey(AdventurerRace, on_delete=models.CASCADE)
     advFeats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
     advItems = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
     stats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    skills = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    personalityTraits = models.TextField(blank=True)
-    ideals = models.TextField(blank=True)
-    bonds = models.TextField(blank=True)
-    flaws = models.TextField(blank=True)
-    inspiration = models.SmallIntegerField(blank=True)
-    size = models.CharField(max_length=1)
