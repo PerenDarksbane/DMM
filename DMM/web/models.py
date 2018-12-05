@@ -83,4 +83,5 @@ class Adventurer(models.Model):
     advRace = models.ForeignKey(AdventurerRace, on_delete=models.CASCADE)
     advFeats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
     advItems = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
-    stats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    advSpells = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)
+    advStats = models.CharField(validators=[validate_comma_separated_integer_list], max_length=50)

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create Characters
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Create Characters</h1>
+        {% if created %}
+            <p class="my-4"><strong>Character added! View it <a href="/characters">here</a></strong></p>
+        {% else %}
+        <p>(View characters <a href="/characters">here</a>)</p>
+        <strong>Go forth and change the world!</strong><br>
+
+        <form id="character_form" method="post" action="/create_characters" enctype="multipart/form-data">
+            {% csrf_token %}
+            <button name="submit" type="submit" class="btn btn-primary">Create Character</button><br>
+            <label for="name">Name</label>
+            <input name="name" type="text" class="form-control" id="name" placeholder="Character Name" value="" size="50" required>
+            <label for="advBackground">Background</label>
+            <textarea required form="character_form" rows="8" cols="80" name="advBackground" class="form-control" placeholder="Character Background"></textarea>
+            <label for="advFeats">Feats</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                View Feats
+            </button><br>
+            <div class="collapse" id="collapse1">
+                <div>
+                    {% for feat in feats %}
+                        <input type="checkbox" name="advFeats{{ feat.id }}" value="{{ feat.id }}"> {{ feat.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="advItems">Items</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                View Items
+            </button><br>
+            <div class="collapse" id="collapse2">
+                <div>
+                    {% for item in items %}
+                        <input type="checkbox" name="advItems{{ item.id }}" value="{{ item.id }}"> {{ item.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="advSpells">Spells</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                View Spells
+            </button><br>
+            <div class="collapse" id="collapse3">
+                <div>
+                    {% for spell in spells %}
+                        <input type="checkbox" name="advSpells{{ spell.id }}" value="{{ spell.id }}"> {{ spell.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="advClass">Classes</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                View Classes
+            </button><br>
+            <div class="collapse" id="collapse4">
+                <div>
+                    {% for classLevel in classLevels %}
+                        <input type="checkbox" name="advClass{{ classLevel.id }}" value="{{ classLevel.id }}"> {{ classLevel.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="advRace">Race</label><br>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                View Races
+            </button><br>
+            <div class="collapse" id="collapse5">
+                <div>
+                    {% for race in races %}
+                        <input type="radio" name="advRace" value="{{ race.id }}"> {{ race.name }}<br>
+                    {% endfor %}
+                </div>
+            </div>
+            <label for="STR">Base Strength</label>
+            <input name="STR" type="number" min="3" max="18" class="form-control" id="STR" placeholder="Base Strength Stat (3 to 18)" value="" size="50" required>
+            <label for="DEX">Base Dexterity</label>
+            <input name="DEX" type="number" min="3" max="18" class="form-control" id="DEX" placeholder="Base Dexterity Stat (3 to 18)" value="" size="50" required>
+            <label for="CON">Base Constitution</label>
+            <input name="CON" type="number" min="3" max="18" class="form-control" id="CON" placeholder="Base Constitution Stat (3 to 18)" value="" size="50" required>
+            <label for="INT">Base Intelligence</label>
+            <input name="INT" type="number" min="3" max="18" class="form-control" id="INT" placeholder="Base Intelligence Stat (3 to 18)" value="" size="50" required>
+            <label for="WIS">Base Wisdom</label>
+            <input name="WIS" type="number" min="3" max="18" class="form-control" id="WIS" placeholder="Base Wisdom Stat (3 to 18)" value="" size="50" required>
+            <label for="CHA">Base Charisma</label>
+            <input name="CHA" type="number" min="3" max="18" class="form-control" id="CHA" placeholder="Base Charisma Stat (3 to 18)" value="" size="50" required>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

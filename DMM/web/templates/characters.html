@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Characters
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid post">
+        <h1>Characters:</h1>
+    <p>(Create characters <a href="/create_characters">here</a>)</p>
+        <table class="table">
+            <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Background</th>
+                <th scope="col">Class</th>
+                <th scope="col">Race</th>
+                <th scope="col">Feats</th>
+                <th scope="col">Items</th>
+                <th scope="col">Spells</th>
+                <th scope="col">Stats</th>
+                <th scope="col">Modify</th>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <form id="class_form" method="post" action="/characters" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.advBackground }}</td>
+                        <td>{{ item.advClass }}</td>
+                        <td>{{ item.advRace.name }}</td>
+                        <td>{{ item.advFeats }}</td>
+                        <td>{{ item.advItems }}</td>
+                        <td>{{ item.advSpells }}</td>
+                        <td>{{ item.advStats }}</td>
+                        <td><button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button></td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -187,6 +187,62 @@ def create_classes(request):
         created = True
     return render(request, 'create_classes.html', {'created' : created, 'feats' : feats, 'items' : items}, context)
 
+@login_required
+def create_characters(request):
+    context = RequestContext(request)
+    created = False
+    userName = UserProfile.objects.get(user = request.user)
+    feats = list(Feat.objects.filter(userName = userName))
+    feats.sort(key=alphabetize)
+    spells = list(Spell.objects.filter(userName = userName))
+    spells.sort(key=alphabetize)
+    items = list(EquipmentItem.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    races = list(AdventurerRace.objects.filter(userName = userName))
+    races.sort(key=alphabetize)
+    classLevels = list(AdventurerClassLevel.objects.filter(userName = userName))
+    classLevels.sort(key=alphabetize)
+    if request.method == 'POST':
+        name = request.POST['name']
+        advBackground = request.POST['advBackground']
+        STR = str(request.POST['STR'])
+        DEX = str(request.POST['DEX'])
+        CON = str(request.POST['CON'])
+        INT = str(request.POST['INT'])
+        WIS = str(request.POST['WIS'])
+        CHA = str(request.POST['CHA'])
+        advStats = STR + ", " + DEX + ", " + CON + ", " + INT + ", " + WIS + ", " + CHA
+        advFeats = ""
+        for f in feats:
+            query = 'advFeats' + str(f.id)
+            if query in request.POST:
+                advFeats += str(request.POST[query]) + ","
+        advFeats = advFeats.strip(",")
+        advSpells = ""
+        for s in spells:
+            query = 'advSpells' + str(s.id)
+            if query in request.POST:
+                advSpells += str(request.POST[query]) + ","
+        advSpells = advSpells.strip(",")
+        advItems = ""
+        for i in items:
+            query = 'advItems' + str(i.id)
+            if query in request.POST:
+                advItems += str(request.POST[query]) + ","
+        advItems = advItems.strip(",")
+        advRace = AdventurerRace.objects.get(id=request.POST['advRace'])
+        advClass = ""
+        for c in classLevels:
+            query = 'advClass' + str(c.id)
+            if query in request.POST:
+                advClass += str(request.POST[query]) + ","
+        advClass = advClass.strip(",")
+        userName = UserProfile.objects.get(user = request.user)
+        r = Adventurer.objects.create(name=name, advBackground=advBackground, advStats=advStats, advFeats=advFeats, advSpells=advSpells, advItems=advItems, advRace=advRace, advClass=advClass, userName=userName)
+        r.save
+        created = True
+    return render(request, 'create_characters.html', {'created' : created, 'feats' : feats, 'spells' : spells, 'items' : items, 'races' : races, 'classLevels' : classLevels}, context)
+
 def index(request):
     return render(request, 'index.html')
 
@@ -282,3 +338,43 @@ def classes(request):
                 classEquipment += equipmentItem.name + ", "
             item.classItems = classEquipment.strip(", ")
     return render(request, 'classes.html', {'items' : items}, context)
+
+@login_required
+def characters(request):
+    context = RequestContext(request)
+    if request.method == 'POST':
+        delete = Adventurer.objects.get(id = request.POST['delete'])
+        delete.delete()
+    userName = UserProfile.objects.get(user = request.user)
+    items = list(Adventurer.objects.filter(userName = userName))
+    items.sort(key=alphabetize)
+    for item in items:
+        advFeats = ""
+        if not item.advFeats == "":
+            feats = item.advFeats.split(",")
+            for f in feats:
+                feat = Feat.objects.get(id = f)
+                advFeats += feat.name + ", "
+            item.advFeats = advFeats.strip(", ")
+        advEquipment = ""
+        if not item.advItems == "":
+            eItems = item.advItems.split(",")
+            for e in eItems:
+                equipmentItem = EquipmentItem.objects.get(id = e)
+                advEquipment += equipmentItem.name + ", "
+            item.advItems = advEquipment.strip(", ")
+        advSpells = ""
+        if not item.advSpells == "":
+            spells = item.advSpells.split(",")
+            for s in spells:
+                spell = Spell.objects.get(id = s)
+                advSpells += spell.name + ", "
+            item.advSpells = advSpells.strip(", ")
+        advClass = ""
+        if not item.advClass == "":
+            classLevels = item.advClass.split(",")
+            for c in classLevels:
+                classLevel = AdventurerClassLevel.objects.get(id = c)
+                advClass += classLevel.name + ", "
+            item.advClass = advClass.strip(", ")
+    return render(request, 'characters.html', {'items' : items}, context)
