@@ -12,20 +12,29 @@
 {% block body %}
     <div class="container-fluid post">
         <h1>Create Characters</h1>
+
         {% if created %}
+            <!-- Once a character is created the user can create another or view created characters-->
             <p class="my-4"><strong>Character added! View it <a href="/characters">here</a></strong></p>
+            <p class="my-4"><strong>Create another <a href="/create_characters">here</a></strong></p>
         {% else %}
+
         <p>(View characters <a href="/characters">here</a>)</p>
         <strong>Go forth and change the world!</strong><br>
 
         <form id="character_form" method="post" action="/create_characters" enctype="multipart/form-data">
             {% csrf_token %}
             <button name="submit" type="submit" class="btn btn-primary">Create Character</button><br>
+
             <label for="name">Name</label>
-            <input name="name" type="text" class="form-control" id="name" placeholder="Character Name" value="" size="50" required>
+            <input name="name" type="text" maxlength="50" class="form-control" id="name" placeholder="Character Name" value="" size="50" required><br>
+
             <label for="advBackground">Background</label>
-            <textarea required form="character_form" rows="8" cols="80" name="advBackground" class="form-control" placeholder="Character Background"></textarea>
-            <label for="advFeats">Feats</label><br>
+            <textarea form="character_form" rows="8" cols="80" name="advBackground" class="form-control" placeholder="Character Background"></textarea><br>
+
+            <label for="advFeats">Feats</label>
+            <p> Note: These feats will be in addition to those provided by class and race. </p>
+            <!-- Bootstrap collapse feature https://getbootstrap.com/docs/4.0/components/collapse/ -->
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
                 View Feats
             </button><br>
@@ -35,8 +44,10 @@
                         <input type="checkbox" name="advFeats{{ feat.id }}" value="{{ feat.id }}"> {{ feat.name }}<br>
                     {% endfor %}
                 </div>
-            </div>
-            <label for="advItems">Items</label><br>
+            </div><br>
+
+            <label for="advItems">Items</label>
+            <p> Note: These items will be in addition to those provided by class. </p>
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                 View Items
             </button><br>
@@ -46,8 +57,10 @@
                         <input type="checkbox" name="advItems{{ item.id }}" value="{{ item.id }}"> {{ item.name }}<br>
                     {% endfor %}
                 </div>
-            </div>
-            <label for="advSpells">Spells</label><br>
+            </div><br>
+
+            <label for="advSpells">Spells</label>
+            <p> Note: These items will be in addition to those provided by race. These are spells you know, class defines spell slots you can use.</p>
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
                 View Spells
             </button><br>
@@ -57,8 +70,10 @@
                         <input type="checkbox" name="advSpells{{ spell.id }}" value="{{ spell.id }}"> {{ spell.name }}<br>
                     {% endfor %}
                 </div>
-            </div>
-            <label for="advClass">Classes</label><br>
+            </div><br>
+
+            <label for="advClass">Classes</label>
+            <p>Note: If you pick two classes from the same class family, the lower level class will be redundant and will thereby be removed.</p>
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
                 View Classes
             </button><br>
@@ -68,8 +83,10 @@
                         <input type="checkbox" name="advClass{{ classLevel.id }}" value="{{ classLevel.id }}"> {{ classLevel.name }}<br>
                     {% endfor %}
                 </div>
-            </div>
+            </div><br>
+
             <label for="advRace">Race</label><br>
+            <p>Note: You must pick a race.</p>
             <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
                 View Races
             </button><br>
@@ -79,19 +96,21 @@
                         <input type="radio" name="advRace" value="{{ race.id }}"> {{ race.name }}<br>
                     {% endfor %}
                 </div>
-            </div>
+            </div><br>
+
+            <p>Note: Base stats do not include race bonuses. Those will be added in automatically.</p>
             <label for="STR">Base Strength</label>
-            <input name="STR" type="number" min="3" max="18" class="form-control" id="STR" placeholder="Base Strength Stat (3 to 18)" value="" size="50" required>
+            <input name="STR" type="number" min="3" max="18" class="form-control" id="STR" placeholder="Base Strength Stat (3 to 18)" value="3" size="50" required><br>
             <label for="DEX">Base Dexterity</label>
-            <input name="DEX" type="number" min="3" max="18" class="form-control" id="DEX" placeholder="Base Dexterity Stat (3 to 18)" value="" size="50" required>
+            <input name="DEX" type="number" min="3" max="18" class="form-control" id="DEX" placeholder="Base Dexterity Stat (3 to 18)" value="3" size="50" required><br>
             <label for="CON">Base Constitution</label>
-            <input name="CON" type="number" min="3" max="18" class="form-control" id="CON" placeholder="Base Constitution Stat (3 to 18)" value="" size="50" required>
+            <input name="CON" type="number" min="3" max="18" class="form-control" id="CON" placeholder="Base Constitution Stat (3 to 18)" value="3" size="50" required><br>
             <label for="INT">Base Intelligence</label>
-            <input name="INT" type="number" min="3" max="18" class="form-control" id="INT" placeholder="Base Intelligence Stat (3 to 18)" value="" size="50" required>
+            <input name="INT" type="number" min="3" max="18" class="form-control" id="INT" placeholder="Base Intelligence Stat (3 to 18)" value="3" size="50" required><br>
             <label for="WIS">Base Wisdom</label>
-            <input name="WIS" type="number" min="3" max="18" class="form-control" id="WIS" placeholder="Base Wisdom Stat (3 to 18)" value="" size="50" required>
+            <input name="WIS" type="number" min="3" max="18" class="form-control" id="WIS" placeholder="Base Wisdom Stat (3 to 18)" value="3" size="50" required><br>
             <label for="CHA">Base Charisma</label>
-            <input name="CHA" type="number" min="3" max="18" class="form-control" id="CHA" placeholder="Base Charisma Stat (3 to 18)" value="" size="50" required>
+            <input name="CHA" type="number" min="3" max="18" class="form-control" id="CHA" placeholder="Base Charisma Stat (3 to 18)" value="3" size="50" required><br>
         </form>
         {% endif %}
     </div>

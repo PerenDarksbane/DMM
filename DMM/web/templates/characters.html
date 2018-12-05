@@ -37,10 +37,13 @@
                         <td>{{ item.advSpells }}</td>
                         <td>{{ item.advStats }}</td>
                         <td>
+                            <!-- This button lets the user delete characters -->
                             <form id="character_form" method="post" action="/characters" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <button name="delete" type="submit" class="btn btn-primary" value="{{ item.id }}">Delete</button>
                             </form>
+                            <br>
+                            <!-- This button lets the user see the character on it's own page -->
                             <form id="viewer_form" method="post" action="/viewer" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <button name="expand" type="submit" class="btn btn-primary" value="{{ item.id }}">Expand</button>

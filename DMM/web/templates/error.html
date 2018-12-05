@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Error
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'web/css/content.css' %}">
+{% endblock %}
+
+{% block body %}
+    <!-- Uses bootstrap and static CSS classes -->
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4">Error</h1>
+        <p class="lead">Please don't break my website. Here is what you did wrong:</p>
+        <p>{{ message }}</p>
+    </div>
+{% endblock %}

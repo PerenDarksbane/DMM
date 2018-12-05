@@ -230,6 +230,8 @@ def create_characters(request):
             if query in request.POST:
                 advItems += str(request.POST[query]) + ","
         advItems = advItems.strip(",")
+        if 'advRace' not in request.POST:
+            return render(request, 'error.html', {'message' : "No race selected."}, context)
         advRace = AdventurerRace.objects.get(id=request.POST['advRace'])
         advClass = ""
         for c in classLevels:

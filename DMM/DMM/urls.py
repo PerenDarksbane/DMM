@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+# All of the url paths for this project are defined in web/urls.py
 urlpatterns += [
     re_path('', include(web_urls)),
 ]
