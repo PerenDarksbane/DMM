@@ -10,7 +10,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # The additional attributes we wish to include.
-    website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
 # These forms are used to create a new user during registration. Registration and login functionality was implemented based on this tutorial: http://www.tangowithdjango.com/book/chapters/login.html
@@ -24,7 +23,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('website', 'picture')
+        fields = ('picture',)
 
 # This class is representative of a standard model used in this project. It is directly linked to a user for login purposes. It has a name and then a variety of properties.
 class AdventurerClassLevel(models.Model):

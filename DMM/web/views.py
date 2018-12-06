@@ -304,12 +304,40 @@ def view(request):
 @login_required
 def feats(request):
     context = RequestContext(request)
-    # If the user presses delete the id of the item they want to delete is sent here and the item is removed from the database.
-    if request.method == 'POST':
-        delete = Feat.objects.get(id = request.POST['delete'])
-        delete.delete()
+    # If the user presses delete, the id of the item they want to delete is sent here and the item is removed from the database if it is not being used by another item.
     userName = UserProfile.objects.get(user = request.user)
-    # In this case items does not stand for equipment items but rather is a generic term for the results pulled when the view pages find the items the user has created (in this case feats).
+    if request.method == 'POST':
+        # If it is discovered that the item being deleted is needed safe will turn to false and the item will not be deleted.
+        safe = True
+        # Find the item to be deleted
+        delete = Feat.objects.get(id = request.POST['delete'])
+        # Find adventurers that could possibly depend on it
+        dependents = Adventurer.objects.filter(userName = userName)
+        # For each dependent, go through each feat it uses
+        for dependent in dependents:
+            for featID in dependent.advFeats.split(","):
+                # If there is a match we know the feat is needed and so safe becomes false and an error message is transmitted
+                if featID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The feat you tried to delete is being used by an adventurer and cannot be deleted."}, context)
+        # We do the same process with adventurer classes as they can also use feats
+        dependents = AdventurerClassLevel.objects.filter(userName = userName)
+        for dependent in dependents:
+            for featID in dependent.classFeats.split(","):
+                if featID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The feat you tried to delete is being used by a class and cannot be deleted."}, context)
+        # We do the same process with adventurer races as they can also use feats
+        dependents = AdventurerRace.objects.filter(userName = userName)
+        for dependent in dependents:
+            for featID in dependent.raceFeats.split(","):
+                if featID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The feat you tried to delete is being used by a race and cannot be deleted."}, context)
+        if safe:
+            # This will only happen if the feat is not being used by any classes, races or adventurers.
+            delete.delete()
+    # In this case "items" does not stand for equipment items but rather is a generic term for the results pulled when the view pages find the items the user has created (in this case feats).
     items = list(Feat.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     # Once again the items sent to the html are not equipment items but are instead the collection of table rows
@@ -319,10 +347,25 @@ def feats(request):
 def equipment(request):
     # Similar structure to feats
     context = RequestContext(request)
-    if request.method == 'POST':
-        delete = EquipmentItem.objects.get(id = request.POST['delete'])
-        delete.delete()
     userName = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        # Behaves like other delete features seen above
+        safe = True
+        delete = EquipmentItem.objects.get(id = request.POST['delete'])
+        dependents = Adventurer.objects.filter(userName = userName)
+        for dependent in dependents:
+            for itemID in dependent.advItems.split(","):
+                if itemID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The item you tried to delete is being used by an adventurer and cannot be deleted."}, context)
+        dependents = AdventurerClassLevel.objects.filter(userName = userName)
+        for dependent in dependents:
+            for itemID in dependent.classItems.split(","):
+                if itemID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The item you tried to delete is being used by a class and cannot be deleted."}, context)
+        if safe:
+            delete.delete()
     items = list(EquipmentItem.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     return render(request, 'equipment.html', {'items' : items}, context)
@@ -331,10 +374,25 @@ def equipment(request):
 def spells(request):
     context = RequestContext(request)
     # Similar structure to feats and equipment
-    if request.method == 'POST':
-        delete = Spell.objects.get(id = request.POST['delete'])
-        delete.delete()
     userName = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        # Behaves like other delete features seen above
+        safe = True
+        delete = Spell.objects.get(id = request.POST['delete'])
+        dependents = Adventurer.objects.filter(userName = userName)
+        for dependent in dependents:
+            for spellID in dependent.advSpells.split(","):
+                if spellID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The spell you tried to delete is being used by an adventurer and cannot be deleted."}, context)
+        dependents = AdventurerRace.objects.filter(userName = userName)
+        for dependent in dependents:
+            for spellID in dependent.raceSpells.split(","):
+                if spellID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The spell you tried to delete is being used by a race and cannot be deleted."}, context)
+        if safe:
+            delete.delete()
     items = list(Spell.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     return render(request, 'spells.html', {'items' : items}, context)
@@ -342,10 +400,18 @@ def spells(request):
 @login_required
 def races(request):
     context = RequestContext(request)
-    if request.method == 'POST':
-        delete = AdventurerRace.objects.get(id = request.POST['delete'])
-        delete.delete()
     userName = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        # Behaves like other delete features seen above but as the class will only have one race, the dependent's races does not need to be split.
+        safe = True
+        delete = AdventurerRace.objects.get(id = request.POST['delete'])
+        dependents = Adventurer.objects.filter(userName = userName)
+        for dependent in dependents:
+            if delete == dependent.advRace:
+                safe = False
+                return render(request, 'error.html', {'message' : "The race you tried to delete is being used by an adventurer and cannot be deleted."}, context)
+        if safe:
+            delete.delete()
     items = list(AdventurerRace.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     # Similar to above view pages but now every item's feats and spells must be converted from id to name
@@ -374,10 +440,19 @@ def races(request):
 @login_required
 def classes(request):
     context = RequestContext(request)
-    if request.method == 'POST':
-        delete = AdventurerClassLevel.objects.get(id = request.POST['delete'])
-        delete.delete()
     userName = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        # Behaves like other delete features seen above
+        safe = True
+        delete = AdventurerClassLevel.objects.get(id = request.POST['delete'])
+        dependents = Adventurer.objects.filter(userName = userName)
+        for dependent in dependents:
+            for classID in dependent.advClass.split(","):
+                if classID == request.POST['delete']:
+                    safe = False
+                    return render(request, 'error.html', {'message' : "The class you tried to delete is being used by an adventurer and cannot be deleted."}, context)
+        if safe:
+            delete.delete()
     items = list(AdventurerClassLevel.objects.filter(userName = userName))
     items.sort(key=alphabetize)
     for item in items:
@@ -409,6 +484,7 @@ def characters(request):
     context = RequestContext(request)
     # This behaves like all the above veiw pages, just with more values.
     if request.method == 'POST':
+        # Nothing depends on adventurers (except the fate of the world ;) ) so they can be deleted freely.
         delete = Adventurer.objects.get(id = request.POST['delete'])
         delete.delete()
     userName = UserProfile.objects.get(user = request.user)

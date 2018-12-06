@@ -20,7 +20,7 @@
         <p>(View feats <a href="/feats">here</a>)</p>
         <strong>Feats are used by races, classes and adventurer's to give them special abilities.</strong><br><br>
 
-        <form id="feat_form" method="post" action="/create_feat" enctype="multipart/form-data">
+        <form id="feat_form" method="post" action="/create_feats" enctype="multipart/form-data">
             {% csrf_token %}
             <button name="submit" type="submit" class="btn btn-primary">Create Feat</button><br><br>
 
