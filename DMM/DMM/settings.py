@@ -15,13 +15,17 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+# As we are not hosting this on the web for the time being and rather as an app that is run on a local host, these settings will remain in preproduction state.
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
+
+# As we are not hosting this on the web for the time being and rather as an app that is run on a local host, these settings will remain in preproduction state.
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'zm^g(@5!cthaa()m79h5ubtw3bqzl50-h^_84*4uww6an^vjhb'
 
+
+# As we are not hosting this on the web for the time being and rather as an app that is run on a local host, these settings will remain in preproduction state.
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -118,9 +122,10 @@ USE_L10N = True
 USE_TZ = True
 
 
+# As we are not hosting this on the web for the time being and rather as an app that is run on a local host, these settings will remain in preproduction state.
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
-# THE BELOW IS NOT SUITABLE FOR PRODUCTION - THERE ARE MANY WAYS TO EASILY ADAPT THIS FOR PRODUCTION THOUGH
+# THE BELOW IS NOT SUITABLE FOR PRODUCTION
 # SEE THE ABOVE URL FOR DETAILS
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
